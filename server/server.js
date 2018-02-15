@@ -20,11 +20,11 @@ app.use(express.static(publicPath));
 io.on("connection", (socket) => {
     console.log("New user Connected");
 
-    socket.emit('newMessage', {
-        from: "Anass Bouchtaoui",
-        text : "hey, how are you",
-        createdAt: new Date().getTime()
-    });
+    // socket.emit('newMessage', {
+    //     from: "Anass Bouchtaoui",
+    //     text : "hey, how are you",
+    //     createdAt: new Date().getTime()
+    // });
 
     socket.on("createEmail", (newEmail) =>{
         console.log("createEmail", newEmail);
@@ -32,6 +32,11 @@ io.on("connection", (socket) => {
 
     socket.on("createMessage", (newMessage) =>{
         console.log("newMessage", newMessage);
+        io.emit("newMessage", {
+            from: newMessage.from,
+            text : newMessage.text,
+            createdAt : new Date().getTime()
+        });
     });
 
     socket.on("disconnect" , () => {
