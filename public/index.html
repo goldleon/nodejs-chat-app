@@ -10,14 +10,16 @@
     <h1>Welcom to the Chat App</h1>
 
     <ol id="messages">
-        
+
     </ol>
 
     <form id="message-form">
+        <input type="text" id="userName" placeholder="username" />
         <input type="text" name="message" placeholder="Message" />
         <button >Send</button>
     </form>
 
+    <button id="send-location">Send Location</button>
 
     <script src="/socket.io/socket.io.js"></script>
     <script src="/js/libs/jquery-3.3.1.min.js"></script>
