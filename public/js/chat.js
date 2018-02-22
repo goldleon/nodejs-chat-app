@@ -12,13 +12,21 @@ function scrollToBottom(){
     var lastMessageheight = newMessage.prev().innerHeight();
 
     if(clientHeight + scrollTop + newMessageHeight + lastMessageheight >= scrollHeight){
-        console.log("Should Scroll");
+        // console.log("Should Scroll");
         messages.scrollTop(scrollHeight);
     }
 }
 
 socket.on("connect", function() {
-    console.log("Connected to server");
+    var params = jQuery.deparam(window.location.search);
+    socket.emit('join', params, function(err){
+        if (err){
+            alert(err);
+            window.location.href = "/";
+        }else{
+            console.log("No Error");
+        }
+    });
 });
 
 socket.on("disconnect", function() {
@@ -71,10 +79,10 @@ jQuery("#message-form").on("submit", function(event){
     event.preventDefault();
     var messagTxtBox = jQuery("[name=message]");
     socket.emit("createMessage",{
-        from: jQuery("#userName").val(),
+        from: jQuery.deparam(window.location.search).name,
         text: messagTxtBox.val()
     }, function(){
-        jQuery("#userName").attr("disabled", true);
+        // jQuery("#userName").attr("disabled", true);
         messagTxtBox.val("");
     });
 
@@ -90,7 +98,7 @@ locationButton.on("click", function(){
         // console.log(position);
         locationButton.removeAttr("disabled").text("Send Location");
         socket.emit("createLocationMessage", {
-            from: jQuery("#userName").val(),
+            from: jQuery.deparam(window.location.search),
             lat : position.coords.latitude,
             lng : position.coords.longitude
         });
